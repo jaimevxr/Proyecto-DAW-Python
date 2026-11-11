@@ -31,6 +31,19 @@ def menu():
     print("5. Mostrar Pokémon")
     print("6. Salir")
 
+def menu_busqueda():
+    """Menu de busqueda"""
+    print("================================")
+    print("       Menu de Busqueda         ")
+    print("================================")
+    print("1. Buscar por ID")
+    print("2. Filtrar por Especie")
+    print("3. Filtrar por Mote")
+    print("4. Filtrar por Shiny")
+    print("5. Filtrar por Numero de Pokedex")
+    print("6. Filtrar por tipo(s)")
+    print("7. Volver al menu Global")
+
 def mostrar_pokemon(pokemon):
     """Muestra por terminal los datos de una captura."""
     datos_oficiales = pokemon_validos[pokemon.especie]
@@ -61,7 +74,7 @@ def capturar_pokemon():
             print("Entrada inválida. Debes escribir un número.")
             return
         if 1 <= nivel <= 100:
-            print(f"¡El nivel de {especie} ahora es {nivel}!")
+            print(f"¡El nivel de {especie} es {nivel}!")
             print("¿El Pokemon capturado es Shiny? (si/no)")
             respuestaShiny = input().lower()
 
@@ -101,6 +114,35 @@ def capturar_pokemon():
             print("Nivel inválido. Por favor, ingrese un nivel entre 1 y 100.")
     else:
         print(f"{especie} no es un Pokémon válido. Por favor, ingrese un nombre de especie válido.")
+
+def buscar_pokemon():
+    # menu_busqueda()
+    opcion = -1
+    # opcion = input("Introduzca el numero para buscar/filtrar: ")
+
+    while opcion not in [1,2,3,4,5,6,7]:
+        menu_busqueda()
+        opcion = input("Introduzca el numero para buscar/filtrar: ")
+
+        if opcion == "1":
+            busquedaID()
+        elif opcion == "2":
+            busquedaEspecie()
+        elif opcion == "3":
+            BusquedaMote()
+        elif opcion == "4":
+            BusquedaShiny()
+        elif opcion == "5":
+            BusquedaNumeroPokedex()
+        elif opcion == "6":
+            BusquedaTipo()
+        elif opcion == "7":
+            print("Saliendo del menu de busqueda")
+            return
+        elif opcion not in [1,2,3,4,5,6,7]:
+            print("Respuesta inválida. Volviendo a mostrar el menu de busqueda. ")
+
+    
 
 
 
