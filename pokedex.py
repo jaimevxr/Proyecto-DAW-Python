@@ -63,13 +63,16 @@ def capturar_pokemon():
     """Funcion para capturar pokemons(añadir a lista)."""
 
     especie = input("Ingrese el nombre de la especie del Pokémon a capturar: ").strip().capitalize()
+    while especie not in pokemon_validos:
+        print("La especie no existe o no esta registrada")
+        especie = input("Ingrese el nombre de la especie del Pokémon a capturar: ").strip().capitalize()
 
     if especie in pokemon_validos:
         print(f"¡Has capturado a un {especie}!")
 
         print("Que nivel tiene el Pokémon? (1-100)")
         try:
-            nivel = int(input())
+            nivel = int(input("Introduce el nivel: "))
         except ValueError:
             print("Entrada inválida. Debes escribir un número.")
             return
@@ -93,6 +96,10 @@ def capturar_pokemon():
             print("¿Desea ponerle un mote al Pokémon? (si/no)")
             respuestaMote = input().lower()
 
+            while respuestaMote not in ["si","no"]:
+                print("Respuesta inválida. Por favor, responda 'si' o 'no'.")
+                respuestaMote = input().lower()
+
             if respuestaMote == "si":
                 mote = input("Ingrese el mote para el Pokémon: ")
             elif respuestaMote == "no":
@@ -115,14 +122,37 @@ def capturar_pokemon():
     else:
         print(f"{especie} no es un Pokémon válido. Por favor, ingrese un nombre de especie válido.")
 
-def buscar_pokemon():
-    # menu_busqueda()
-    opcion = -1
-    # opcion = input("Introduzca el numero para buscar/filtrar: ")
+def busquedaID():
+    """Busca una captura por su ID."""
 
-    while opcion not in [1,2,3,4,5,6,7]:
+    try:
+        id = int(input("Introduce el ID que quieres buscar: "))
+    except ValueError:
+        print("Entrada inválida. Debes escribir un número.")
+        return
+
+    encontrado = False
+
+    for captura in PokemonCaptured:
+        if captura.id == id:
+            mostrar_pokemon(captura)
+            encontrado = True
+            break
+
+    if not encontrado:
+        print(f"No se ha encontrado ninguna captura con el ID {id}.")
+
+
+
+
+
+def buscar_pokemon():
+    """Funcion menu buscar pokemons"""
+    opcion = ""
+
+    while opcion != "7":
         menu_busqueda()
-        opcion = input("Introduzca el numero para buscar/filtrar: ")
+        opcion = input("Seleccione la manera de buscar/fltrar: ")
 
         if opcion == "1":
             busquedaID()
@@ -139,7 +169,7 @@ def buscar_pokemon():
         elif opcion == "7":
             print("Saliendo del menu de busqueda")
             return
-        elif opcion not in [1,2,3,4,5,6,7]:
+        elif opcion not in ["1","2","3","4","5","6","7"]:
             print("Respuesta inválida. Volviendo a mostrar el menu de busqueda. ")
 
     
