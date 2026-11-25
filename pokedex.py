@@ -180,7 +180,7 @@ def busquedaMote():
     encontrado = False
     
     for captura in PokemonCaptured:
-        if captura.mote.strip().lower() == mote.lower():
+        if captura["mote"].strip().lower() == mote.lower():
             mostrar_pokemon(captura)
             encontrado = True
     
@@ -203,7 +203,7 @@ def busquedaShiny():
     encontrado = False
 
     for captura in PokemonCaptured:
-        if captura.shiny == shiny:
+        if captura["shiny"] == shiny:
             mostrar_pokemon(captura)
             encontrado = True
 
@@ -225,7 +225,7 @@ def busquedaNumeroPokedex():
     encontrado = False
 
     for captura in PokemonCaptured:
-        if pokemon_validos[captura.especie]["numero"] == numPokedex:
+        if pokemon_validos[captura["especie"]]["numero"] == numPokedex:
             mostrar_pokemon(captura)
             encontrado = True
 
@@ -241,7 +241,7 @@ def busquedaTipo():
     encontrado = False
 
     for captura in PokemonCaptured:
-        tipos_pokemon = pokemon_validos[captura.especie]["tipo"]
+        tipos_pokemon = pokemon_validos[captura["especie"]]["tipo"]
         if tipo1 in tipos_pokemon:
             if tipo2 == "" or tipo2 in tipos_pokemon:
                 mostrar_pokemon(captura)
