@@ -3,19 +3,20 @@ from pokemon_validos import pokemon_validos
 
 # Lista de pokemons capturados
 PokemonCaptured = []
+siguiente_id = 1
 
-class Pokemon:
-    """Representa una captura de Pokémon."""
+# class Pokemon:
+#     """Representa una captura de Pokémon."""
 
-    siguiente_id = 1
+#     siguiente_id = 1
 
-    def __init__(self, especie, nivel, mote="", shiny=False):
-        self.id = Pokemon.siguiente_id
-        Pokemon.siguiente_id += 1
-        self.especie = especie
-        self.nivel = nivel
-        self.mote = mote
-        self.shiny = shiny
+#     def __init__(self, especie, nivel, mote="", shiny=False):
+#         self.id = Pokemon.siguiente_id
+#         Pokemon.siguiente_id += 1
+#         self.especie = especie
+#         self.nivel = nivel
+#         self.mote = mote
+#         self.shiny = shiny
 
 
 
@@ -57,21 +58,22 @@ def menuModificar():
 
 def mostrar_pokemon(pokemon):
     """Muestra por terminal los datos de una captura."""
-    datos_oficiales = pokemon_validos[pokemon.especie]
+    datos_oficiales = pokemon_validos[pokemon["especie"]]
     tipos = ", ".join(datos_oficiales["tipo"])
 
     print("\n--- Datos de la captura ---")
-    print(f"ID: {pokemon.id}")
-    print(f"Especie: {pokemon.especie}")
+    print(f"ID: {pokemon['id']}")
+    print(f"Especie: {pokemon['especie']}")
     print(f"Número de Pokédex: {datos_oficiales['numero']}")
     print(f"Tipo(s): {tipos}")
-    print(f"Nivel: {pokemon.nivel}")
-    print(f"Mote: {pokemon.mote}")
-    print(f"Shiny: {'Sí' if pokemon.shiny else 'No'}")
+    print(f"Nivel: {pokemon['nivel']}")
+    print(f"Mote: {pokemon['mote']}")
+    print(f"Shiny: {'Sí' if pokemon['shiny'] else 'No'}")
 
 # Agregar la funcion para capturar pokemons(añadir a lista)
 def capturar_pokemon():
     """Funcion para capturar pokemons(añadir a lista)."""
+    global siguiente_id
 
     especie = input("Ingrese el nombre de la especie del Pokémon a capturar: ").strip().capitalize()
     while especie not in pokemon_validos:
@@ -119,11 +121,12 @@ def capturar_pokemon():
                 print("Respuesta inválida. Se asignará el nombre de la especie como mote.")
                 mote = especie
             
-            pokemon_capturado = Pokemon(
-                especie=especie,
-                nivel=nivel,
-                mote=mote,
-                shiny=shiny)
+            pokemon_capturado = {
+                "especie":especie,
+                "nivel":nivel,
+                "mote":mote,
+                "shiny":shiny}
+            siguiente_id +=1
             PokemonCaptured.append(pokemon_capturado)
             
             print(f"¡Has capturado a {mote}({especie})!")
@@ -137,7 +140,7 @@ def busquedaID():
     """Busca una captura por su ID."""
 
     try:
-        id = int(input("Introduce el ID que quieres buscar: "))
+        id_buscado = int(input("Introduce el ID que quieres buscar: "))
     except ValueError:
         print("Entrada inválida. Debes escribir un número.")
         return
@@ -145,13 +148,13 @@ def busquedaID():
     encontrado = False
 
     for captura in PokemonCaptured:
-        if captura.id == id:
+        if captura["id"] == id_buscado:
             mostrar_pokemon(captura)
             encontrado = True
             break
 
     if not encontrado:
-        print(f"No se ha encontrado ninguna captura con el ID {id}.")
+        print(f"No se ha encontrado ninguna captura con el ID {id_buscado}.")
 
 def busquedaEspecie():
     """Filtra las capturas por su especie."""
@@ -163,7 +166,7 @@ def busquedaEspecie():
     encontrado = False
 
     for captura in PokemonCaptured:
-        if captura.especie == especie:
+        if captura["especie"] == especie:
             mostrar_pokemon(captura)
             encontrado = True
 
