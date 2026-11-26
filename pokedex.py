@@ -59,16 +59,21 @@ def mostrar_pokemon(pokemon):
 # Agregar la funcion para capturar pokemons(añadir a lista)
 def capturar_pokemon():
     """Funcion para capturar pokemons(añadir a lista)."""
+
+    # Pasamos la variable de siguiente_id para poder sumarle la ID
     global siguiente_id
 
+    # Validacion y peticion del pokemon
     especie = input("Ingrese el nombre de la especie del Pokémon a capturar: ").strip().capitalize()
     while especie not in pokemon_validos:
         print("La especie no existe o no esta registrada")
         especie = input("Ingrese el nombre de la especie del Pokémon a capturar: ").strip().capitalize()
 
+    # Si la especie introducida es valida hace la captura y sigue
     if especie in pokemon_validos:
         print(f"¡Has capturado a un {especie}!")
-
+        
+        # Validacion de nivel
         print("Que nivel tiene el Pokémon? (1-100)")
         try:
             nivel = int(input("Introduce el nivel: "))
@@ -80,6 +85,8 @@ def capturar_pokemon():
             print("¿El Pokemon capturado es Shiny? (si/no)")
             respuestaShiny = input().lower()
 
+            # Validacion si es shiny (booleano)
+            # solo admite la respuesta si o no
             while respuestaShiny not in ["si", "no"]:
                 print("Respuesta inválida. Por favor, responda 'si' o 'no'.")
                 respuestaShiny = input().lower()
@@ -95,10 +102,11 @@ def capturar_pokemon():
             print("¿Desea ponerle un mote al Pokémon? (si/no)")
             respuestaMote = input().lower()
 
+            # solo admite la respuesta si o no
             while respuestaMote not in ["si","no"]:
                 print("Respuesta inválida. Por favor, responda 'si' o 'no'.")
                 respuestaMote = input().lower()
-
+            
             if respuestaMote == "si":
                 mote = input("Ingrese el mote para el Pokémon: ")
             elif respuestaMote == "no":
@@ -106,14 +114,19 @@ def capturar_pokemon():
             else:
                 print("Respuesta inválida. Se asignará el nombre de la especie como mote.")
                 mote = especie
-            
+
+            # se crea el pokemon con los parametros introducidos
             pokemon_capturado = {
                 "id":siguiente_id,
                 "especie":especie,
                 "nivel":nivel,
                 "mote":mote,
                 "shiny":shiny}
+            
+            # se suma la id para que el siguiente que añadas tenga la siguiente id
             siguiente_id +=1
+
+            # se agrega el pokemon a la lista
             PokemonCaptured.append(pokemon_capturado)
             
             print(f"¡Has capturado a {mote}({especie})!")
@@ -126,37 +139,50 @@ def capturar_pokemon():
 def busquedaID():
     """Busca una captura por su ID."""
 
+    # pide al usuario un numero entero para buscar por el id, si no es numero entero vuelve
     try:
         id_buscado = int(input("Introduce el ID que quieres buscar: "))
     except ValueError:
         print("Entrada inválida. Debes escribir un número.")
         return
-
+    
+    # se crea la variable de encontrado
     encontrado = False
 
+    # bussqueda de la captura
     for captura in PokemonCaptured:
+
+        # si la id de la captura equivale a la buscada muestra el pokemon, devuelve el pokemon y encontrado lo pone en true
         if captura["id"] == id_buscado:
             mostrar_pokemon(captura)
             encontrado = True
             return captura
-
+        
+    # si no lo encontró no devuelve nada
     if not encontrado:
         print(f"No se ha encontrado ninguna captura con el ID {id_buscado}.")
 
 def busquedaEspecie():
     """Filtra las capturas por su especie."""
     especie = input("Introduce la especie que quieres filtrar: ").strip().capitalize()
+
+    # comprueba que la especie introducida se encuentre en la validacion
     if especie not in pokemon_validos:
         print(f"{especie} no es una especie válida.")
         return
     
+    # se crea la variable de encontrado
     encontrado = False
 
+    # busqueda de la captura
     for captura in PokemonCaptured:
+
+        #si la especie equivale a la especie buscada muestra todos los pokemons que tengan dicha especie y encontrado lo pone en true
         if captura["especie"] == especie:
             mostrar_pokemon(captura)
             encontrado = True
 
+    # si no lo encontró no devuelve nada
     if not encontrado:
         print(f"No se ha encontrado ninguna captura de la especie {especie}.")
 
@@ -164,14 +190,18 @@ def busquedaEspecie():
 def busquedaMote():
     """Filtra las capturas por su mote."""
     mote = input("Introduce el mote que quieres filtrar: ").strip()
-        
+
+    # se crea la variable de encontrado
     encontrado = False
-    
+
+    #busqueda de la captura
     for captura in PokemonCaptured:
+        #si el mote equivale a el mote buscado muestra todos los pokemons que tengan dicho mote y encontrado lo pone en true
         if captura["mote"].strip().lower() == mote.lower():
             mostrar_pokemon(captura)
             encontrado = True
     
+    # si no lo encontró no devuelve nada
     if not encontrado:
         print(f"No se ha encontrado ninguna captura con el mote: {mote}.")
     
