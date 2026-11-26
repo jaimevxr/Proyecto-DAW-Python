@@ -5,20 +5,6 @@ from pokemon_validos import pokemon_validos
 PokemonCaptured = []
 siguiente_id = 1
 
-# class Pokemon:
-#     """Representa una captura de Pokémon."""
-
-#     siguiente_id = 1
-
-#     def __init__(self, especie, nivel, mote="", shiny=False):
-#         self.id = Pokemon.siguiente_id
-#         Pokemon.siguiente_id += 1
-#         self.especie = especie
-#         self.nivel = nivel
-#         self.mote = mote
-#         self.shiny = shiny
-
-
 
 def menu():
     """Menu de la Pokedex."""
@@ -122,6 +108,7 @@ def capturar_pokemon():
                 mote = especie
             
             pokemon_capturado = {
+                "id":siguiente_id,
                 "especie":especie,
                 "nivel":nivel,
                 "mote":mote,
@@ -151,7 +138,7 @@ def busquedaID():
         if captura["id"] == id_buscado:
             mostrar_pokemon(captura)
             encontrado = True
-            break
+            return captura
 
     if not encontrado:
         print(f"No se ha encontrado ninguna captura con el ID {id_buscado}.")
@@ -172,6 +159,7 @@ def busquedaEspecie():
 
     if not encontrado:
         print(f"No se ha encontrado ninguna captura de la especie {especie}.")
+
 
 def busquedaMote():
     """Filtra las capturas por su mote."""
@@ -212,6 +200,7 @@ def busquedaShiny():
         
 
 def busquedaNumeroPokedex():
+    """Filtra las capturas por numero de pokedex"""
     try:
         numPokedex = int(input("Introduce el numero de pokedex que quieres filtrar: "))
     except ValueError:
@@ -233,6 +222,7 @@ def busquedaNumeroPokedex():
         print(f"No se ha encontrado ninguna captura con el numero de la pokedex {numPokedex}.")
 
 def busquedaTipo():
+    """Filtra las capturas por tipo"""
 
     tipo1 = input("Introduce el primer tipo: ").strip().capitalize()
     tipo2 = input("Introduce el segundo tipo (o pulsa Enter para omitirlo): ").strip().capitalize()
@@ -278,16 +268,16 @@ def buscar_pokemon():
 
 
 def modificar_pokemon():
-
+    """Modifica las caracteristicas no esenciales del pokemon"""
     try:
-        id_buscado = int(input("Introduce un ID para modificar el pokemon"))
+        id_buscado = int(input("Introduce un ID para modificar el pokemon: "))
     except ValueError:
         return print("Entrada inválida, debes introducir un numero")
 
     encontrado = False
 
     for captura in PokemonCaptured:
-        if captura.id == id_buscado:
+        if captura["id"] == id_buscado:
             mostrar_pokemon(captura)
             encontrado = True
             menuModificar()
@@ -296,16 +286,16 @@ def modificar_pokemon():
             except ValueError:
                 return print("Entrada inválida, debes introducir un numero")
             if opcion == 1:
-                captura.mote = input(f"Introduce el mote nuevo para {captura.mote}")
+                captura["mote"] = input(f"Introduce el mote nuevo para {captura['mote']}")
             elif opcion == 2:
                 try:
-                    nivel_nuevo = int(input(f"Introduce el nivel nuevo (actual: {captura.nivel}): "))
+                    nivel_nuevo = int(input(f"Introduce el nivel nuevo (actual: {captura['nivel']}): "))
                 except ValueError:
                     print("Entrada inválida. Debes introducir un número.")
                     return
 
                 if 1 <= nivel_nuevo <= 100:
-                    captura.nivel = nivel_nuevo
+                    captura["nivel"] = nivel_nuevo
                     print("Nivel actualizado.")
                 else:
                     print("El nivel debe estar entre 1 y 100.")
@@ -319,6 +309,7 @@ def modificar_pokemon():
         print(f"No se ha encontrado ninguna captura con el ID {id_buscado}.")
 
 def liberar_pokemon():
+    """Libera al pokemon por ID"""
 
     try:
         id_buscado = int(input("Introduce un ID para liberar el pokemon"))
@@ -328,20 +319,20 @@ def liberar_pokemon():
     encontrado = False
 
     for captura in PokemonCaptured:
-        if captura.id == id_buscado:
+        if captura["id"] == id_buscado:
             mostrar_pokemon(captura)
             confirmacion = input("¿Seguro que quieres liberar el pokemon del PC?").strip().lower()
             encontrado = True
-        if confirmacion == "si":
-            PokemonCaptured.remove(captura)
-            print(f"Has liberado a {captura.mote} ({captura.especie}).")
-            return
-        elif confirmacion == "no":
-            print("Liberación cancelada, volviendo al menu")
-            return
-        else:
-            print("Respuesta inválida. Escribe 'si' o 'no'.")
-            return
+            if confirmacion == "si":
+                PokemonCaptured.remove(captura)
+                print(f"Has liberado a {captura['mote']} ({captura['especie']}).")
+                return
+            elif confirmacion == "no":
+                print("Liberación cancelada, volviendo al menu")
+                return
+            else:
+                print("Respuesta inválida. Escribe 'si' o 'no'.")
+                return
 
             
     if not encontrado:
@@ -350,12 +341,17 @@ def liberar_pokemon():
 
 
 def mostrar_pokemons():
+    """Muestra todos los pokemons"""
+    encontrado = False
     for captura in PokemonCaptured:
         mostrar_pokemon(captura)
-    
+        encontrado = True
+    if not encontrado:
+        print("No dispones ningun pokemon en el PC")
 
 
 def main():
+    """Funcion principal para actuar a las demas funciones"""
     while True:
         menu()
         opcion = input("Seleccione una opción: ")
